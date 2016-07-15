@@ -29,7 +29,7 @@ Insert the battery
 
 Step 1: Install the RS507PCTool
 
-The RS507PCTool is located at \\sksna01\Software\Standalone\RS507\RS507PCTOOL000103.DAT
+The RS507PCTool is located at *_* 
 
 Step 2: Update the RS507 Firmware
 
@@ -71,7 +71,7 @@ There are two firmware updates that need to be completed:
 
 Firmware Update 1
 
-Click Browse → \\sksna01\Software\Standalone\RS507\PAAACS00-005-R05D0.DAT
+Click Browse → *_*
 
 Click Update Firmware
 
@@ -89,7 +89,7 @@ Re-run RS507PCTool
 
 Click Open to re-establish the connection to the device
 
-Click Browse → \\sksna01\Software\Standalone\RS507\PAAACS00-005-R05D0_BT_HID_INTER_CHAR_DELY_10MS_SPR27986.DAT
+Click Browse → *_*
 
 Click Update Firmware
 
