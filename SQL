@@ -1,0 +1,90 @@
+Backup
+[With]	Archive	and Compression
+Entire	Database
+$ mysqldump -u username -p database_name | gzip > database_name.sql.gz
+
+Variables to change:
+username	
+database_name	
+
+
+Single Table
+$ mysqldump -u username -p database_name table_name | gzip > table_name.sql.gz
+
+Variables to change:
+username	
+database_name	
+table_name	
+
+
+[Without] Archive and Compression
+Entire	Database
+$ mysqldump -u username -p database_name > database_name.sql
+
+Variables	to	change:
+username	
+database_name	
+table_name	
+
+
+Single	Table
+$ mysqldump -u username -p database_name table_name >table_name.sql
+
+Variables to change:
+username	
+database_name	
+table_name	
+
+
+Restore
+[With] Archive and Compression
+Entire Database
+$ zcat database_name.sql.gz | mysql -u username -p database_name
+
+Variables to change:
+username	
+database_name	
+
+
+[Without] Archive and Compression
+Entire Database
+$ mysql -u username -p database_name < database_name.sql
+
+Variables to change:
+username	
+database_name	
+
+Single	Table
+$ mysql -u username -p database_name < table_name.sql
+Variables to change:
+username	
+database_name	
+table_name	
+
+
+
+
+Extract Table From Dump 
+
+sed --quiet --expression '/DROP	TABLE.*`table_name`/,/UNLOCK TABLES/p' database_name.sql > table_name.sql
+
+Variables to change:
+table_name	
+database_name	
+
+
+
+Table Information
+Find MySQL Table Sizes
+SELECT TABLE_NAME AS "Table", round(((data_length + index_length) / 1024 / 1024), 2) AS Size_in_MB
+FROM information_schema.TABLES
+WHERE table_schema = 'database_name'
+ORDER BY Size_in_MB DESC;
+
+Copy/Paste: Editable Version
+SELECT TABLE_NAME AS "Table",round(((data_length + index_length) / 1024 / 1024), 2) AS Size_in_MB
+FROM information_schema.TABLES
+WHERE table_schema = 'database_name' ORDER BY Size_in_MB DESC;
+
+Variables to change:
+database_name	
