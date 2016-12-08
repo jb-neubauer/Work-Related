@@ -88,3 +88,9 @@ WHERE table_schema = 'database_name' ORDER BY Size_in_MB DESC;
 
 Variables to change:
 database_name	
+
+
+START TRANSACTION;
+UPDATE ship_station SET ship_label_printer_path='\\\\RenoShip1-Think\\RShip1Zebra' WHERE ship_id=20;
+UPDATE ship_station SET ship_label_printer_type='Zebra.Zebra2844' WHERE ship_id=20;
+COMMIT;
