@@ -90,7 +90,7 @@ Variables to change:
 database_name	
 
 
+Edit table
 START TRANSACTION;
-UPDATE ship_station SET ship_label_printer_path='\\\\RenoShip1-Think\\RShip1Zebra' WHERE ship_id=20;
-UPDATE ship_station SET ship_label_printer_type='Zebra.Zebra2844' WHERE ship_id=20;
+UPDATE 'table name' SET 'table item'='path' WHERE 'table item' = 'table value';
 COMMIT;
