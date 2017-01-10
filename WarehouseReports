@@ -1,0 +1,40 @@
+Displaying Warehouse Productivity Reports
+
+Purpose - To outline the process to display productivity reports on warehouse TVs
+
+Procedure
+
+1.Install chromecast on TV:
+2.Insert the chromecast into a free HDMI port.
+3.Plug the power cord for the chromecast into its own power source.
+4.Power on TV and switch to correct input, you should see the chromecast homescreen at this time.
+5.Open the chromecast app.
+6.Join the chromecast to the chromecast network.
+	a.Password: **************
+Name the chromecast by location (i.e. Kitroom TV is the chromecast/TV setup in the Kitroom).
+
+7.Log into the Chromecast PC with each username specified below and the password.
+	
+Username 		Department
+ChromecastCarrier       Common Carrier
+ChromecastReceiving     Receiving
+ChromecastShipping      Shipping
+ChromecastKitroom       Kitroom
+
+8.Open Google Chrome
+	a.Install the google cast extension if not installed Which can be found in the Google Play Store.
+9.Navigate to the page you wish to mirror:
+	a.Shipping
+		i.https://link to shipping report
+	b.Common Carrier
+		i.https://link to common carrier report
+	c.Kitroom
+		i.https://link to kitroom report
+	d.Receiving
+		i.https://link to receiving report
+10.Begin casting by clicking the Google Cast icon  in the top right of browser window and select the 
+appropriate Cast from the list. Once connected the icon will turn blue indicating it is casting. 
+11.Press F11 for full screen and ensure that it is displaying on the TV.
+12.Repeat steps 7-11 for all the productivity reports you wish to cast. You should have the 4 accounts 
+logged in and casting simultaneously.
+

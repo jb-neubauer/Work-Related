@@ -1,0 +1,51 @@
+Typical Attacks:
+
+Phishing ~ We have already seen this type of attack where an email was sent out and asked for account information.  
+This type of attack is very common and because of it people are susceptible due to lack of training.  (We have 
+had training on this already).  The main point of this is that there is a sense of urgency many times with this attack.  
+
+Quid pro Quo ~ Often times not thought of as a Social engineering attack, this attack relies on the victims naivety.  
+They impersonate IT or other services, offering help for an issue or a non-issue for information or other malicious acts.  
+The attacker can gain access to the users computer and from there, disable their firewall and install malicious software 
+under the guise of software updates.  Things to note though, often times passwords can be obtained in exchange for non-IT 
+services.  This could include items like Candy, Writing materials, or other things.  
+
+Tailgating ~ This is when an unknown person gains unauthorized access by piggybacking someone else's authorization.  For 
+example: a “delivery” person carrying an oversized box walking up to the door, our inclination is to hold the door for them.  
+Often times this is done without knowledge of a delivery being made.  Other things to look for would be over friendly people.  
+We are all familiar with the term “Stranger Danger” the same applies here.  These individuals will start a conversation with 
+employees showing a familiarity with the workings of the company and showing they belong.  Then ask to be let in because the 
+forgot their badge, key fob, or other device to gain access to a building.
+
+Pretexting ~ This type of attack relies on gaining false trust from the victim.  They pretend to need certain types of 
+information to do their jobs.  They will use a false story in order to gain the information they need.  They could also 
+manipulate individuals to performing an action to exploit weaknesses.  These attacks can be used to gain sensitive and 
+nonsensitive information.
+
+Baiting ~ This is a similar attack to Phishing.  The difference is the offer or promise of goods.  Attackers could use 
+offers of free music, movies or other services for credentials or other information.  A common promise is free gift cards
+
+
+Misc. Information
+
+Even seemingly benign information can lead to something severe (Phishing)
+
+Sharing too much information on social media can enable attackers to guess passwords or extract a company's confidential 
+information through posts by employees. (Shobha Mallarapu) 
+
+Shoulder surfing is an attack not listed but should be mentioned.  This attack is exactly what it sounds like.  The 
+attacker will look over the shoulder of the victim to view logon credentials.  
+
+A lot of times an attack will come from within an organization.  Most times these employees are disgruntled.  The way to 
+handle them is to if you are an employee, speak up.  Tell your manager your concerns, make them aware.  For managers: remain 
+professional, don’t let it fester, Keep it private, Document, and don’t empower the individual.  (additional information 
+can be found https://www.americanexpress.com/us/small-business/openforum/articles/the-5-steps-to-managing-a-disgruntled-employee/)
+
+Additional information can be found at https://www.tripwire.com/state-of-security/security-awareness/5-social-engineering-attacks-to-watch-out-for/
+
+
+References:
+Social Engineering Attacks: Common Techniques & How to Prevent an Attack  https://digitalguardian.com/blog/social-engineering-attacks-common-techniques-how-prevent-attack
+
+The Social Engineering Framework  http://www.social-engineer.org/framework/general-discussion/categories-social-engineers/identity-theives/
+
