@@ -1,9 +1,839 @@
+Intro SQL commands
+
+SELECT
+SELECT * FROM <table name>
+This selects all records from what ever table you want
+
+SELECT - extracts data from a database
+UPDATE - updates data in a database
+DELETE - deletes data from a database
+INSERT INTO - inserts new data into a database
+CREATE DATABASE - creates a new database
+ALTER DATABASE - modifies a database
+CREATE TABLE - creates a new table
+ALTER TABLE - modifies a table
+DROP TABLE - deletes a table
+CREATE INDEX - creates an index (search key)
+DROP INDEX - deletes an index
+
+-- adds a one lien comment after the "--"
+
+use / at the beginning and end of a comment for lines
+/This is a 
+multi-line
+comment/
+
+To ignore just a part of a statement, use the /* */ comment.
+Any text between /* and */ will be ignored.
+
+SELECT *FROM Customers WHERE (CustomerName LIKE 'L%' OR CustomerName LIKE 'R%' 
+/*OR CustomerName LIKE 'S%'*/) AND Country = 'USA'  /This will search for
+all customer names starting with L or R that have a country of USA/
+
+The "Where" Clause extracts data that fulfills only certain criteria
+Operands for the Where Clause
+=	Equal
+<>	Not equal. Note: In some versions of SQL this operator may be written as !=
+>	Greater than
+<	Less than
+>=	Greater than or equal
+<=	Less than or equal
+BETWEEN	Between an inclusive range
+LIKE	Search for a pattern
+IN	To specify multiple possible values for a column
+
+AND displays records only if All conditions are true
+OR displays records only if one of the conditions are true
+
+ORDER BY 
+This sorts the results by one or more columns either in Ascending(ASC) or Descending(DESC) order
+SELECT column_name FROM table_name ORDER BY column_name ASC|DESC;
+
+INSERT INTO writes data into a table 
+INSERT INTO table_name (column1,column2,column3,...)
+VALUES (value1,value2,value3,...);
+
+UPDATE is udsed to update existing data in a table
+UPDATE table_name SET column1=value1,column2=value2 WHERE some_column=some_value;
+
+DELETE is used to delete rows in a table
+DELETE FROM table_name WHERE come_column=some_value;
+
+DELETE can be used o tdelete all rows in a table without deleting the table
+DELETE * FROM table_name
+
+SELECT TOP is used to specift the number of records to return
+SELECT * FROM column_name LIMIT number_of_records;
+ex.	SELECT TOP 2 * FROM Customers;
+	SELECT TOP 50 PERCENT * FROM Customers;
+
+LIKE is used ot search for a pattern
+SELECT column_name FROM table_name WHERE column_name LIKE pattern;
+ex.	SELECT * FROM Customers WHERE City LIKE 's%';
+
+*Wildcards*
+
+Wildcard			Description
+%				A substitute for zero or more characters
+_				A substitute for a single character
+[charlist]			Sets and ranges of characters to match
+[^charlist] or[!charlist]	Matches only a character NOT specified within the brackets	
+
+IN allows form multiple values in a WHERE clause
+SELECT column_name FROM table_name WHERE column_name IN (value1, value2, ....);
+ex.	SELECT * FROM Customers WHERE City IN ('Paris', 'London');
+
+BETWEEN selects values within a range
+SELECT column_name FROM table_name WHERE column_name BETWEEN value1 AND value2;
+ex.	SELECT * FROM Products WHERE Price BETWEEN 10 AND 20;
+Can also use NOT BETWEEN to signify all things not in the range
+
+Alias
+For a column:  SELECT column_name AS alias_name FROM table_name;
+For a table:   SELECT column_name FROM table_name AS alias_name;
+If there is a space in the alias name use "" or []
+ex. 	SELECT CustomerName AS Customer, ContactName AS [Contact Person] FROM Customers;
+
+SQL JOIN - Most Common type is an INNER JOIN
+These return rows from multiple tables where the join condition is met
+INNER JOIN: Returns all rows when there is at least one match in BOTH tables
+LEFT JOIN: Return all rows from the left table, and the matched rows from the right table
+RIGHT JOIN: Return all rows from the right table, and the matched rows from the left table
+FULL JOIN: Return all rows when there is a match in ONE of the tables
+SELECT column_name FROM table1 INNER JOIN table2 ON table1.column_name=table2.column_name
+ex.	SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate FROM Orders
+	INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+
+
+LEFT JOIN Returns all rows from the left table with the matching rows in the right.
+IF there is no match then the result is NULL
+SELECT column_name FROM table1 LEFT JOIN table2 ON table1.column_name=table2.column_name;
+ex.	SELECT Customers.CustomerName, Orders.OrderID FROM Customers LEFT JOIN Orders
+	ON Customers.CustomerID=Orders.CustomerID ORDER BY Customers.CustomerName;
+
+RIGHT JOIN Returns all rows from the right table with the matching rows in the left.
+If there is no match then the result is NULL
+SELECT column_name FROM table1 RIGHT JOIN table2 ON table1.column_name=table2.column_name;
+ex.	SELECT Orders.OrderID, Employees.FirstName FROM Orders RIGHT JOIN Employees 
+	ON Orders.EmployeeID=Employees.EmployeeID ORDER BY Orders.OrderID;
+
+FULL JOIN returns all rows from both the left and right tables
+FULL JOIN combines th results of both the LEFT and RIGHT joins
+SELECT column_name FROM table1 FULL OUTER JOIN table2 on table1.column_name=table2.column_name;
+ex.	SELECT Customers.CustomerName, Orders.OrderID FROM Customer FULL OUTER JOIN Orders
+	ON Customers.CustomerID=Orders.CustomerID ORDER BY Customers.CustomerName;
+
+UNION is used to combine the result-sets of two or more SELECT statements
+SELECT column_name FROM table1 UNION SELECT column_name FROM table2;
+UNION only selects distinct values, use UNION ALL to allow duplicate values
+ex.	SELECT City FROM Customers UNION SELECT City FROM Suppliers ORDER BY City;
+ex.	SELECT City FROM Customers UNION ALL SELECT City FROM Suppliers ORDER BY City;
+ex.	SELECT City, Country FROM Customers WHERE Country ='Germany' UNTION ALL SELECT
+	City, Country FROM Suppliers WHERECountry ='Germany' ORDER BY City;
+
+SELECT INTO selects data from one table and inserts it into a new table
+SELECT * INTO newtable [IN externaldb] FROM table1;
+ex.	SELECT * INTO CustomerBackup2013 IN 'Backup.mdb' FROM Customers;
+ex.	SELECT CustomerName, ContactName INTO CustomerBackup2013 FROM Customers;
+ex.	SELECT Cstomers.CustomerName, Orders.OrderID INTO CustomerOrderBackup2013 FROM Customers
+	LEFT JOIN Orders ON Customers.CustomerID=Orders.CustomerID;
+
+INSERT INTO SELECT copies data frm on etable and inserts it into an existing table (Existing
+rows are not affected)
+INSERT INTO table2 SELECT * FROM table1;
+INSERT INTO table2 (column_name) SELECT column_name FROM table1;
+ex.	INSERT INTO Customers (CustomerName, Country) SELECT SupplierName, Country
+	FROM Suppliers;
+
+CREATE DATABASE creates a database
+CREATE DATABASE dbname;
+ex.	CREATE DATABASE my_db;
+
+CREATE TABLE creates a table within a database
+CREATE TABLE table_name (column_name1 data_type(size), column_name2 data_type(size)....);
+ex.	CREATE TABLE Persons
+	(
+	Person ID int,
+	LastName varchar(255),
+	FirstName varchar(255),
+	Addresss varchar(255),
+	City varchar(255)
+	);
+ 
+Constraints are specific rules for data in a table if there is a violation then the action
+is aborted
+CREATE TABLE table_name
+(
+column_name1 data_type(size) constraint_name,
+column_name2 data_type(size) constraint_name,
+....
+);
+
+COSNTRAINTS:
+NOT NULL - Indicates that a column cannot store NULL value
+UNIQUE - Ensures that each row for a column must have a unique value
+PRIMARY KEY - A combination of a NOT NULL and UNIQUE. Ensures that a column 
+(or combination of two or more columns) have a unique identity which helps to find 
+a particular record in a table more easily and quickly
+FOREIGN KEY - Ensure the referential integrity of the data in one table to 
+match values in another table
+CHECK - Ensures that the value in a column meets a specific condition
+DEFAULT - Specifies a default value for a column
+
+NOT NULL Enforces a field to always contain a value
+ex.	CREATE TABLE PersonNotNull
+	(P_Id int NOT NULL,
+	LastName varchar(255) NOT NULL,
+	FirstName varchar(255),
+	Address varchar(255),
+	City varchar(255)
+	);
+
+UNIQUE uniquely identifies each record in a database table
+ex.	CREATE TABLE Persons
+	(
+	P_Id int NOT NULL UNIQUE,
+	LastName varchar(255) NOT NULL,
+	FirstName varchar(255),
+	Addresss varchar(255),
+	City varchar(255)
+	);
+
+UNIQUE Constrain on Alter table use
+ALTER TABEL Persons ADD UNIQUE (P_Id);
+
+To drop a UNIQUE Constraint 
+for MYSQL use: 
+	ALTER TABLE Persons DROP INDEX uc_PersonID
+for SQL/ORACLE/MS ACCESS use:  
+	ALTER TABLE Persons DROP CONSTRAINT uc_PersonID;
+
+PRIMARY KEY uniquely identifies each record in a database table
+They must contain UNIQUE values and can not contain NULL values
+Most tables should contain a primary key, and each table can only contain ONE primary key
+ex.	CREATE TABLE Persons
+	(
+	P_Id int NOT NULL,
+	LastName varchar(255) NOT NULL,
+	FirstName varchar(255), 
+	Address varchar(255),
+	City varchar(255),
+	PRIMARY KEY (P_Id)
+	);
+
+To create a PRIMARY KEY on an already created table use
+ALTER TABLE table_name
+ADD PRIMARY KEY (record);
+
+To drop a PRIMARY KEY on a table use
+ALTER TABLE table_name
+DROP PRIMARY KEY;
+
+A FOREIGN KEY points to a PRIMARY KEY in another table
+ex.	CREATE TABLE Orders
+	(
+	O_Id int NOT NULL,
+	OrderNo int NOT NULL,
+	P_ID int,
+	PRIMARY KEY (O_Id),
+	FOREIGN KEY (P_Id) REFERENCES Persons(P_Id)
+	);
+for constraint ex.	CREATE TABLE Orders
+			(
+			O_Id int NOT NULL,
+			OrderNo int NOT NULL,
+			P_Id int,
+			PRIMARY KEY (O_Id)
+			CONSTRAINT fk_PerOrders FOREIGN KEY (P_Id)
+			REFERENCES Persons(P_Id)
+			);
+Foreign key on already created table:
+ex.	ALTER TABLE Orders
+	ADD FOREIGN KEY (P_Id)
+	REFERENCES Persons(P_Id);
+To drop a foreign key:
+ex.	ALTER TABLE Orders
+	DROP FOREIGN KEY fk_PerOrders;
+
+CHECK limits the value range placed in a column
+ex.	CREATE TABLE Persons
+	(
+	P_Id int NOT NULL,
+	LastName varchar(255) NOT NULL;
+	FirstName varchar(255),
+	Addresss varchar(255),
+	City varchar(255),
+	CHECK (P_Id>0)
+	);
+CHECK on ALTER TABLE
+ex.	ALTER TABLE Persons
+	ADD CHECK (P_Id>0);
+DROP CHECK 
+ex. 	ALTER TABLE Persons
+	DROP CHECK chk_Person;
+
+DEFAULT insters a default value into a column
+ex.	CREATE TABLE Persons
+	(
+	P_Id int NOT NULL,
+	LastName varchar(255) NOT NULL,
+	FirstName varchar(255),
+	Address varchar(255),
+	City varchar(255) DEFAULT 'Sandnes'
+	);
+DEFAULT can be used to add system values
+ex.	CREATE TABLE Orders
+	(
+	O_Id int NOT NULL,
+	OrderNo int NOT NULL,
+	P_Id int, 
+	Order Date date DEFAULT GETDATE()
+	);
+DEFAULT on ALTER TABLE
+ex.	ALTER TABLE Persons
+	ALTER City SET DEFAULT 'SANDNES';
+DROP DEFAULT
+ex.	ALTER TABLE Persons
+	ALTER City DROP DEFAULT;
+
+CREATE INDEX creates indexes in tables (find data fast without reading the entire table)
+	CREATE INDEX index_name
+	ON table_name (column_name);
+UNIQUE INDEX
+	CREATE UNIQUE INDEX index_name
+	ON table_name (column_name);
+ex.	CREATE INDEX PIndex
+	ON Persons (LastName);
+
+DROP deletes items 
+DROP INDEX:
+MSSQL	DROP INDEX table_name.index_name;
+MYSQL	ALTER TABLE table_name DROP INDEX index_name;
+DROP TABLE:
+	DROP TABLE table_name;
+DROP DATABASE:
+	DROP DATABASE database_name
+TRUNCATE TABLE (deletes data in the table without deleting the table itself)
+	TRUNCATE TABLE table_name;
+	
+ALTER TABLE modifies, adds, or deletes columns in existing tables
+add:
+	ALTER TABLE table_name
+	ADD column_name datatype
+delete:
+	ALTER TABLE table_name
+	DROP COLUMN column_name
+modify:
+	ALTER TABLE table_name
+	MODIFY column_name datatype
+
+AUTO INCREMENT increments the field automatically when a new record is inserted
+ex.	CREATE TABLE Persons
+	(
+	ID int NOT NULL AUTO_INCREMENT,
+	LastName varchar(255) NOT NULL,
+	FirstName varchar(255),
+	Address varchar(255),
+	City varchar(255),
+	PRIMARY KEY (ID)
+	); 		*This auto increments the primary key in the persons table*
+
+ALTER TABLE with AUTO INCREMENT
+ex.	ALTER TABLE Persons ADD_INCREMENT=100
+
+CREATE VIEW is a virtual table based on a result set of an SQL statement
+	CREATE VIEW view_name AS
+	SELECT column_name (s)
+	FROM table_name
+	WHERE condition
+ex.	CREATE VIEW [Current Product List] AS
+	SELECT ProductID, ProductName
+	FROM Products
+	WHERE Discontinued=No
+*To query the view above run:*
+	SELECT * FROM [Current Product List]
+ex.	CREATE VIEW [Products Above Average Price] AS
+	SELECT ProductName, UnitPrice
+	FROM Products
+	WHERE UnitPrice>(SELECT AVG(UnitPrice) FROM Products);
+ex	SELECT * FROM [Products Above Average Price]
+ex.	CREATE VIEW [Category Sales For 1997]
+	SELECT DISTINCT CategoryName, Sum(ProductSales)AS CategorySales
+	FROM [Product Sales For 1997]
+	GROUP BY CategoryName
+ex.	SELECT * FROM [Category Sales For 1997]
+ex.	SELECT * FROM [Category Sales For 1997]
+	WHERE CategoryName='Beverages' 	*This only selects all sales for the category beveragess*
+
+Updating a view
+	CREATE OR REPLACE VIEW view_name AS
+	SELECT column_name(s)
+	FROM table_name
+	WHERE condition
+ex.	CREATE OR REPLACE VIEW [Current Product List'] AS
+	SELECT ProductID, ProductName, Category
+	FROM Products
+	WHERE Discontinued=No
+
+Deleting a View
+	DROP VIEW view_name
+
+SQL DATES
+
+Function	Description
+NOW()		Returns the current date and time
+CURDATE()	Returns the current date
+CURTIME()	Returns the current time
+DATE()		Extracts the date part of a date or date/time expression
+EXTRACT()	Returns a single part of a date/time
+DATE_ADD()	Adds a specified time interval to a date
+DATE_SUB()	Subtracts a specified time interval from a date
+DATEDIFF()	Returns the number of days between two dates
+DATE_FORMAT()	Displays date/time data in different formats
+	
+SQL Date data Types
+
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+YEAR - format YYYY or YY
+
+ex.	SELECT * FROM Orders WHERE OrderDate='2008-11-11'
+
+NULL represents missing or unknown data
+NULL values are a placeholder for unknown or inapplicable values
+ex.	SELECT LastName, FirstName, Address FROM Persons
+	WHERE Address IS NULL
+
+SQL Genreal Data Types
+
+Data type				Description
+CHARACTER(n)				Character string. Fixed-length n
+VARCHAR(n) orCHARACTER VARYING(n)	Character string. Variable length. Maximum length n
+BINARY(n)				Binary string. Fixed-length n
+BOOLEAN					Stores TRUE or FALSE values
+VARBINARY(n) orBINARY VARYING(n)	Binary string. Variable length. Maximum length n
+INTEGER(p)				Integer numerical (no decimal). Precision p
+SMALLINT				Integer numerical (no decimal). Precision 5
+INTEGER					Integer numerical (no decimal). Precision 10
+BIGINT					Integer numerical (no decimal). Precision 19
+DECIMAL(p,s)				Exact numerical, precision p, scale s. Example: decimal(5,2) is a 
+					number that has 3 digits before the decimal and 2 digits after the decimal
+NUMERIC(p,s)				Exact numerical, precision p, scale s. (Same as DECIMAL)
+FLOAT(p)				Approximate numerical, mantissa precision p. A floating number in base 10 
+					exponential notation. The size argument for this type consists of a single 
+					number specifying the minimum precision
+REAL					Approximate numerical, mantissa precision 7
+FLOAT					Approximate numerical, mantissa precision 16
+DOUBLE PRECISION			Approximate numerical, mantissa precision 16
+DATE					Stores year, month, and day values
+TIME					Stores hour, minute, and second values
+TIMESTAMP				Stores year, month, day, hour, minute, and second values
+INTERVAL				Composed of a number of integer fields, representing a period of time, depending on the type of interval
+ARRAY					A set-length and ordered collection of elements
+MULTISET				A variable-length and unordered collection of elements
+XML					Stores XML data
+
+
+
+Data type		Access		SQLServer	Oracle		MySQL		PostgreSQL
+boolean			Yes/No		Bit		Byte		N/A		Boolean
+integer			Number(integer)	Int		Number		Int Integer	Int Integer
+float			Number (single)	Float Real	Number		Float		Numeric
+currency		Currency	Money		N/A		N/A		Money
+string (fixed)		N/A		Char		Char		Char		Char
+string (variable)	Text(<256)	Varchar 	VarcharVarchar2 Varchar		Varchar
+			Memo (65k+)	
+binary object		OLE Object Memo	Binary 		Long		Blob		Binary 
+					(fixed up to 8K)  Raw		Text		Varbinary
+					Varbinary (<8K)
+					Image (<2GB)	
+
+Data Types for Various DB's
+MS Access:
+
+Data type		Description							Storage
+Text			Use for text or combinations of text and numbers. 
+			255 characters maximum	 
+Memo			Memo is used for larger amounts of text. Stores up 
+			to 65,536 characters. Note: You cannot sort a memo field. 
+			However, they are searchable	 
+Byte			Allows whole numbers from 0 to 255				1 byte
+Integer			Allows whole numbers between -32,768 and 32,767	2 bytes
+Long			Allows whole numbers between -2,147,483,648 and 2,147,483,647	4 bytes
+Single			Single precision floating-point. Will handle most decimals	4 bytes
+Double			Double precision floating-point. Will handle most decimals	8 bytes
+Currency		Use for currency. Holds up to 15 digits of whole dollars, 	8 bytes
+			plus 4 decimal places. Tip: You can choose which country's 
+			currency to use	
+AutoNumber		AutoNumber fields automatically give each record its own 	4 bytes
+			number, usually starting at 1	
+Date/Time		Use for dates and times	8 bytes
+Yes/No			A logical field can be displayed as Yes/No, True/False, or	1 bit 
+			On/Off. In code, use the constants True and False (equivalent 
+			to -1 and 0). Note: Null values are not allowed in 
+			Yes/No fields	
+Ole Object		Can store pictures, audio, video, or other BLOBs		up to 1GB 
+			(Binary Large OBjects)
+Hyperlink		Contain links to other files, including web pages	 
+Lookup Wizard		Let you type a list of options, which can then be chosen	4 bytes 
+			from a drop-down list	
+
+MySQL Data Types (Text, Numerical, Date/Time)
+Text:
+
+Data type		Description
+CHAR(size)		Holds a fixed length string (can contain letters, numbers, 
+			and special characters). The fixed size is specified in 
+			parenthesis. Can store up to 255 characters
+VARCHAR(size)		Holds a variable length string (can contain letters, numbers, 
+			and special characters). The maximum size is specified in 
+			parenthesis. Can store up to 255 characters. Note: If you 
+			put a greater value than 255 it will be converted to a TEXT type
+TINYTEXT		Holds a string with a maximum length of 255 characters
+TEXT			Holds a string with a maximum length of 65,535 characters
+BLOB			For BLOBs (Binary Large OBjects). Holds up to 65,535 bytes of data
+MEDIUMTEXT		Holds a string with a maximum length of 16,777,215 characters
+MEDIUMBLOB		For BLOBs (Binary Large OBjects). Holds up to 16,777,215 bytes of data
+LONGTEXT		Holds a string with a maximum length of 4,294,967,295 characters
+LONGBLOB		For BLOBs (Binary Large OBjects). Holds up to 4,294,967,295 bytes of data
+ENUM(x,y,z,etc.)	Let you enter a list of possible values. You can list up to 
+			65535 values in an ENUM list. If a value is inserted that is 
+			not in the list, a blank value will be inserted.
+			Note: The values are sorted in the order you enter them.
+			You enter the possible values in this format: ENUM('X','Y','Z')
+SET			Similar to ENUM except that SET may contain up to 64 list items and can store more than one choice
+
+Number types:
+Data type		Description
+TINYINT(size)		-128 to 127 normal. 0 to 255 UNSIGNED*. The maximum number 
+			of digits may be specified in parenthesis
+SMALLINT(size)		-32768 to 32767 normal. 0 to 65535 UNSIGNED*. The maximum 
+			number of digits may be specified in parenthesis
+MEDIUMINT(size)		-8388608 to 8388607 normal. 0 to 16777215 UNSIGNED*. The 
+			maximum number of digits may be specified in parenthesis
+INT(size)		-2147483648 to 2147483647 normal. 0 to 4294967295 UNSIGNED*. 
+			The maximum number of digits may be specified in parenthesis
+BIGINT(size)		-9223372036854775808 to 9223372036854775807 normal. 0 to 
+			18446744073709551615 UNSIGNED*. The maximum number of digits 
+			may be specified in parenthesis
+FLOAT(size,d)		A small number with a floating decimal point. The maximum 
+			number of digits may be specified in the size parameter. 
+			The maximum number of digits to the right of the decimal 
+			point is specified in the d parameter
+DOUBLE(size,d)		A large number with a floating decimal point. The maximum 
+			number of digits may be specified in the size parameter. The 
+			maximum number of digits to the right of the decimal point is 
+			specified in the d parameter
+DECIMAL(size,d)		A DOUBLE stored as a string , allowing for a fixed decimal point. 
+			The maximum number of digits may be specified in the size parameter. 
+			The maximum number of digits to the right of the decimal point is 
+			specified in the d parameter
+
+*The integer types have an extra option called UNSIGNED. Normally, the integer goes from an 
+negative to positive value. Adding the UNSIGNED attribute will move that range up so it 
+starts at zero instead of a negative number.*
+
+Date Types:
+
+Data type		Description
+DATE()			A date. Format: YYYY-MM-DD
+			Note: The supported range is from '1000-01-01' to '9999-12-31'
+
+DATETIME()		*A date and time combination. Format: YYYY-MM-DD HH:MI:SS
+			Note: The supported range is from '1000-01-01 00:00:00' to '9999-12-31 23:59:59'
+
+TIMESTAMP()		*A timestamp. TIMESTAMP values are stored as the number of 
+			seconds since the Unix epoch ('1970-01-01 00:00:00' UTC). Format: YYYY-MM-DD HH:MI:SS
+			Note: The supported range is from '1970-01-01 00:00:01' UTC to '2038-01-09 03:14:07' UTC
+
+TIME()			A time. Format: HH:MI:SS
+			Note: The supported range is from '-838:59:59' to '838:59:59'
+
+YEAR()			A year in two-digit or four-digit format.
+			Note: Values allowed in four-digit format: 1901 to 2155. Values allowed in two-digit format: 
+			70 to 69, representing years from 1970 to 2069
+
+
+*Even if DATETIME and TIMESTAMP return the same format, they work very differently. In an INSERT or UPDATE query, 
+the TIMESTAMP automatically set itself to the current date and time. TIMESTAMP also accepts various formats, 
+like YYYYMMDDHHMISS, YYMMDDHHMISS, YYYYMMDD, or YYMMDD.*
+
+
+SQL Server Data Types
+Strings:
+
+Data type		Description						Storage
+char(n)			Fixed width character string. Maximum 8,000 characters	Defined width
+varchar(n)		Variable width character string. Maximum 8,000		2 bytes + number of chars 
+			characters	
+varchar(max)		Variable width character string. Maximum 1,073,741,824 	2 bytes + number of chars
+			characters	
+text			Variable width character string. Maximum 2GB of		4 bytes + number of chars 
+			text data	
+nchar			Fixed width Unicode string. Maximum 4,000 characters	Defined width x 2
+nvarchar		Variable width Unicode string. 
+			Maximum 4,000 characters	 
+nvarchar(max)		Variable width Unicode string. 
+			Maximum 536,870,912 characters	 
+ntext			Variable width Unicode string. 
+			Maximum 2GB of text data	 
+bit			Allows 0, 1, or NULL	 
+binary(n)		Fixed width binary string. Maximum 8,000 bytes	 
+varbinary		Variable width binary string. Maximum 8,000 bytes	 
+varbinary(max)		Variable width binary string. Maximum 2GB	 
+image			Variable width binary string. Maximum 2GB	 
+
+
+Number types:
+
+Data type		Description						Storage
+tinyint			Allows whole numbers from 0 to 255			1 byte
+smallint		Allows whole numbers between -32,768 and 32,767		2 bytes
+int			Allows whole numbers between -2,147,483,648		4 bytes 
+			and 2,147,483,647	
+bigint			Allows whole numbers between 				8 bytes
+			-9,223,372,036,854,775,808 
+			and 9,223,372,036,854,775,807
+decimal(p,s)		Fixed precision and scale numbers.			5-17 bytes
+			Allows numbers from -10^38 +1 to 10^38 –1.
+
+			The p parameter indicates the maximum total 
+			number of digits that can be stored (both to 
+			the left and to the right of the decimal point). 
+			p must be a value from 1 to 38. Default is 18.
+
+			The s parameter indicates the maximum number of 
+			digits stored to the right of the decimal point. 
+			s must be a value from 0 to p. Default value is 0
+
+numeric(p,s)		Fixed precision and scale numbers.			5-17 bytes
+			Allows numbers from -10^38 +1 to 10^38 –1.
+
+			The p parameter indicates the maximum total number 
+			of digits that can be stored (both to the left and 
+			to the right of the decimal point). p must be a 
+			value from 1 to 38. Default is 18.
+
+			The s parameter indicates the maximum number of digits 
+			stored to the right of the decimal point. s must be a 
+			value from 0 to p. Default value is 0
+
+smallmoney		Monetary data from -214,748.3648 to 214,748.3647	4 bytes
+money			Monetary data from -922,337,203,685,477.5808 to 	8 bytes
+			922,337,203,685,477.5807
+float(n)		Floating precision number data from -1.79E + 308  	4 or 8 bytes
+			to 1.79E + 308.
+			The n parameter indicates whether the field should 
+			hold 4 or 8 bytes. float(24) holds a 4-byte field 
+			and float(53) holds an 8-byte field. Default value 
+			of n is 53.
+
+real			Floating precision number data from -3.40E + 38 	4 bytes
+			to 3.40E + 38	
+
+Date Types:
+Data type		Description						Storage
+datetime		From January 1, 1753 to December 31, 9999 with 		8 bytes
+			an accuracy of 3.33 milliseconds	
+datetime2		From January 1, 0001 to December 31, 9999 with 		6-8 bytes
+			an accuracy of 100 nanoseconds	
+smalldatetime		From January 1, 1900 to June 6, 2079 with an 		4 bytes
+			accuracy of 1 minute	
+date			Store a date only. From January 1, 0001 to 		3 bytes
+			December 31, 9999	
+time			Store a time only to an accuracy of 100 nanoseconds	3-5 bytes
+datetimeoffset		The same as datetime2 with the addition of 		8-10 bytes
+			a time zone offset
+timestamp		Stores a unique number that gets updated every time 
+			a row gets created or modified. The timestamp value 
+			is based upon an internal clock and does not 
+			correspond to real time. Each table may have only 
+			one timestamp variable
+
+Other data types:
+Data type		Description
+sql_variant		Stores up to 8,000 bytes of data of various data 
+			types, except text, ntext, and timestamp
+uniqueidentifier	Stores a globally unique identifier (GUID)
+xml			Stores XML formatted data. Maximum 2GB
+cursor			Stores a reference to a cursor used for database 
+			operations
+table			Stores a result-set for later processing
+
+
+
+SQL Aggregate functions return a single value calculated from values in a column
+AVG() - Returns the average value
+COUNT() - Returns the number of rows
+FIRST() - Returns the first value
+LAST() - Returns the last value
+MAX() - Returns the largest value
+MIN() - Returns the smallest value
+SUM() - Returns the sum
+
+SQL Scalare functions return a single value based on input value
+UCASE() - Converts a field to upper case
+LCASE() - Converts a field to lower case
+MID() - Extract characters from a text field
+LEN() - Returns the length of a text field
+ROUND() - Rounds a numeric field to the number of decimals specified
+NOW() - Returns the current system date and time
+FORMAT() - Formats how a field is to be displayed
+
+AVG() returns the average of a column
+	SELECT AVG(column_name) FROM table_name
+ex.	SELECT AVG(Price) AS PriceAverage FROM Products;
+ex.	SELECT ProductName, Price FROM Products
+	WHERE Price>(SELECT AVG(Price) FROM Products);
+
+COUNT() returns the number of rows that match a criteria
+	SELECT COUNT(column_name) FROM table_name;
+	SELECT COUNT(*) FROM table_name;
+COUNT(DISTINCT)returns distinct values of a specified column
+	SELECT COUNT(DISTINCT column_name) FROM table_name;
+ex.	SELECT COUNT(CustomerID) AS OrdersFromCustomID7 FROM Orders
+	WHERE CustomerID=7;
+ex	SELECT COUNT(*) AS NumberOfOrders FROM Orders;
+ex.	SELECT COUNT(DISTINCT CustomerID) AS NumberOfCustomers FROM Orders;
+
+FIRST() returns the first value of the seleted column
+	SELECT FIRST(column_name) FROM table_name; 	*(MS Access ONLY)*
+SQL Work around in SQL Server, MYSQL and Oracle 
+Server	SELECT TOP 1 column_name FROM table_name
+	ORDER BY column_name ASC;
+ex.	SELECT TOP 1 CustomerName FROM Customers
+	ORDER By Customer ID ASC;
+MYSQL:	SELECT column_name FROM table_name
+	ORDER BY column_name ASC
+	LIMIT 1;
+ex.	SELECT CustomerName FROM table_name
+	ORDER BY CustomerID ASC
+	LIMIT 1;
+Oracle	SELECT column_name FROM table_name
+	WHERE ROWNUM <=1
+	ORDER BY column_name ASC;
+
+LAST() returns the last value of the column
+	SELECT LAST(column_name) FROM table_name;  *(MS ACCESS ONLY)*	
+Server	SELECT TOP 1 column_name FROM table_name
+	ORDER BY column_name DESC;
+ex.	SELECT TOP 1 CustomerName FROM Customers
+	ORDER BY CustomerID DESC;
+MYSQL	SELECT column_name FROM table_name
+	ORDER BY column_name DESC
+	LIMIT 1;
+ex.	SELECT CustomerName FROM Customers
+	ORDER BY CustomerID DESC
+	LIMIT 1;
+Oracle	SELECT column_name FROM table_name
+	ORDER BY column_name DESC
+	WHERE REWNUM <=1;
+ex.	SELECT CustomerName FROM Customers
+	ORDER BY CustomerID DESC
+	WHERE ROWNUM <=1;
+
+MAX() returns the largest value of the selected column
+	SELECT MAX(column_name) FROM table_name;
+ex.	SELECT MAX(Price) AS HighestPrice FROM Products;
+MIN() returns the smalles value of the selected column
+	SELECT MIN(column_name) FROM table_name);
+ex.	SELECT MIN(Price) As SmallestOrderPrice FROM Products;
+
+SUM() returns the total sum of a column (numerical)
+	SELECT SUM(column_name) FROM table_name;
+ex.	SELECT SUM(Quantity) AS TotalItemsOrdered FROM OrderDetails;
+
+GROUP BY is used with aggregate functions to group a result-set by one or more columns
+	SELECT column_name, aggregate_function(column_name)
+	FROM table_name
+	WHERE column_name operator value
+	GROUP BY column_name;
+ex.	SELECT Shippres.ShipperName, Count(Orders.OrderID) AS NumberOfOrders FROM Orders
+	LEFT JOIN Shippers
+	On Orders.ShipperID=Shippers.ShipperID
+	GROUP BY ShipperName;      *(For single column)
+ex.	SELECT Shippers.ShipperName, Employees.LastName,
+	COUNT(Orders.OrderID) AS NumberOfOrders
+	FROM ((Orders
+	INNER JOIN Shippers
+	ON Orders.ShipperId=Shippers.ShipperID)
+	INNER JOIN Employees
+	ON Orders.EmployeeID=Employees.EmployeeID)
+	GROUP BY ShipperName, LastName;		*(For Multiple columns)*
+
+HAVING replaces WHERE because it could not be used with an aggregate function
+	SELECT column_name, aggregate_function(column_name)
+	FROM table_name
+	WHERE column_name operator value
+	GORUP BY column_name
+	HAVING aggregate_function(column_name) operator value;
+ex.	SELECT Employees.LastName, COUNT(Orders.OrderID) AS NumberOfOrders FROM Orders
+	INNER JOIN Employees
+	On Orders.EmployeeID=Employees.EmployeeID
+	WHERE LastName='Davolio' OR LastName='Fuller'
+	GROUP BY LastName
+	HAVING COUNT(Orders.OrderID) > 25;
+
+UCASE() converts the value of a field to uppercase
+	SELECT UCASE(column_name) FROM table_name;
+Server:	SELECT UPPER(column_name) FROM table_name;
+ex.	SELECT UCASE(CustomerName) AS Customer, City
+	FROM Customers;
+
+LCASE() converts the value of a field to lowercase
+	SELECT LCASE(column_name) FROM table_name;
+Server:	SELECT LOWER(column_name) FROM table_name;
+ex.	SELECT LCASE(CustomerName) AS Customer, City
+	FROM Customers;	
+
+MID() extracts characters from a text field
+	SELECT MID(column_name, start, length) AS some_name FROM table_name;
+Parameter	Description
+column_name	Required. The field to extract characters from
+start		Required. Specifies the starting position (starts at 1)
+length		Optional. The number of characters to return. If omitted, 
+		the MID() function returns the rest of the text
+Server:	SELECT SUBSTRING(column_name, start, length) AS some_name FROM table_name;
+Oracle:	SELECT SUBSTR(column_name, start, length) AS some_name FROM table_name;
+ex.	SELECT MID(City,1,4) AS ShortCity
+	FROM Customers;
+
+LEN() gives the length of the value in a text field
+	SELECT LEN(column_name) FROM table_name;
+Oracle:	SELECT LENGTH(column_name) FROM table_name;
+ex.	SELECT CustomerName, LEN(Address) AS LengthOfAddress
+	FROM Customers;
+
+ROUND() rounds a numeric field to the number of decimals specified.  	*(.5 rounds to even so both 11.5 and 12.5 round to 12)
+									many databases have adopted this for arithmetic 
+									operations)
+	SELECT ROUND(column_name, decimals) FROM table_name;
+Parameter	Description
+column_name	Required. The field to round.
+decimals	Required. Specifies the number of decimals to be returned.
+ex.	SELECT ProductName, ROUND(Price, 0) AS RoundedPrice
+	FROM Products;
+
+NOW() returns current system date and time
+	SELECT NOW() FROM table_name;
+ex.	SELECT ProductName, Price, NOW() AS PerDate
+	FROM Products;
+
+FORMAT() formats how a field will be displayed
+	SELECT FORMAT(column_name, format) FROM table_name
+Parameter	Description
+column_name	Required. The field to be formatted.
+format		Required. Specifies the format.
+ex.	SELECT ProductName, Price FORMAT(NOW(),'YYYY-MM-DD') AS PerDate
+	FROM Products;
+
 Backup
 [With]	Archive	and Compression
 Entire	Database
 $ mysqldump -u username -p database_name | gzip > database_name.sql.gz
 
-Variables to change:
+2Variables to change:
 username	
 database_name	
 
