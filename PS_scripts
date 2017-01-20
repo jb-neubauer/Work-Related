@@ -1,0 +1,24 @@
+Add-Printer -name <Printer name> -DriverName <Driver Name> -PortName <Port Name>
+
+Add-Printer -ConnectonName \\<network location> -DriverName (If driver is not automatically installed)
+
+Enter-PsSession -ComputerName <name> -Port <port number>(5353) -Credentials <Domain\User> 
+
+Get-Eventlog -LogName System -InstanceID -Newest <number of records you want to see>
+
+Restart-computer
+
+Test-Connection -ComputerName <Computer Name) -Count <how many tests> 
+
+Start-job -FilePath <path to file in "">
+
+gwmi Win32_USBControllerDevice -computername <name if needed> | fl Antecedent,Dependent  *Report all USB devices installed*
+
+Stop-Pricess -ID <ID number>
+
+*Execution policy for Scripts*
+Set-ExecutionPolicy Restricted		(check only)
+Set-ExecutionPolicy AllSigned		(Most Secure)
+Set-ExecutionPolicy RemoteSigned	(Medium Secure)
+Set-ExecutionPolicy Unrestricted	(Least Secure)
+
